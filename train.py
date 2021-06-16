@@ -108,8 +108,8 @@ def train_net(net,
 
                     writer.add_images('images', imgs, global_step)
                     if net.n_classes == 1:
-                        writer.add_images('masks/true', true_masks * 255, global_step)
-                        writer.add_images('masks/pred', torch.sigmoid(masks_pred) * 255, global_step)
+                        writer.add_images('masks/true', true_masks, global_step)
+                        writer.add_images('masks/pred', torch.sigmoid(masks_pred), global_step)
 
         if save_cp:
             try:
