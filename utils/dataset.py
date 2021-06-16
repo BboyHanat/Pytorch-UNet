@@ -15,13 +15,20 @@ class BasicDataset(Dataset):
         self.masks_dir = masks_dir
         self.size = size
         self.mask_suffix = mask_suffix
-
+        support = ['iPone 8', 'iPhone X', 'iPhone 11', 'iPhone 12']
         self.ids = [splitext(file)[0] for file in listdir(imgs_dir)
-                    if not file.startswith('.')]
+                    if not file.startswith('.') and self.get_is_need_train(file, support)]
         logging.info(f'Creating dataset with {len(self.ids)} examples')
 
     def __len__(self):
         return len(self.ids)
+
+    @staticmethod
+    def get_is_need_train(img_name, support_list):
+        for sup in support_list:
+            if sup in img_name:
+                return True
+        return False
 
     @classmethod
     def preprocess(cls, img_nd, size):
