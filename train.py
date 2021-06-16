@@ -134,9 +134,9 @@ def get_args():
                         help='Learning rate', dest='lr')
     parser.add_argument('-f', '--load', dest='load', type=str, default=False,
                         help='Load model from a .pth file')
-    parser.add_argument('-sw', '--size_w', dest='scale', type=int, default=1280,
+    parser.add_argument('-sw', '--size_w', dest='size_w', type=int, default=1280,
                         help='New width size of the images')
-    parser.add_argument('-sh', '--size_h', dest='scale', type=int, default=640,
+    parser.add_argument('-sh', '--size_h', dest='size_h', type=int, default=640,
                         help='New height size factor of the images')
     parser.add_argument('-v', '--validation', dest='val', type=float, default=10.0,
                         help='Percent of the data that is used as validation (0-100)')
