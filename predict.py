@@ -1,7 +1,7 @@
 import argparse
 import logging
 import os
-
+import cv2
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -16,11 +16,11 @@ from utils.dataset import BasicDataset
 def predict_img(net,
                 full_img,
                 device,
-                scale_factor=1,
+                new_size=(1280, 640),
                 out_threshold=0.5):
     net.eval()
 
-    img = torch.from_numpy(BasicDataset.preprocess(full_img, scale_factor))
+    img = torch.from_numpy(BasicDataset.preprocess(full_img, new_size))
 
     img = img.unsqueeze(0)
     img = img.to(device=device, dtype=torch.float32)
@@ -69,9 +69,12 @@ def get_args():
     parser.add_argument('--mask-threshold', '-t', type=float,
                         help="Minimum probability value to consider a mask pixel white",
                         default=0.5)
-    parser.add_argument('--scale', '-s', type=float,
-                        help="Scale factor for the input images",
-                        default=0.5)
+    parser.add_argument('--new_size_w', '-sw', type=int,
+                        help="new size for the input images",
+                        default=1280)
+    parser.add_argument('--new_size_h', '-sh', type=int,
+                        help="new size for the input images",
+                        default=640)
 
     return parser.parse_args()
 
@@ -116,11 +119,11 @@ if __name__ == "__main__":
     for i, fn in enumerate(in_files):
         logging.info("\nPredicting image {} ...".format(fn))
 
-        img = Image.open(fn)
-
+        img = cv2.imread(fn)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         mask = predict_img(net=net,
                            full_img=img,
-                           scale_factor=args.scale,
+                           new_size=(args.new_size_w, args.new_size_h),
                            out_threshold=args.mask_threshold,
                            device=device)
 
