@@ -22,7 +22,7 @@ class UNet(nn.Module):
         self.up1 = Up(1024, 512 // factor, bilinear)
         self.up2 = Up(512, 256 // factor, bilinear)
         self.up3 = Up(256, 128 // factor, bilinear)
-        self.up4 = Up(256, 128, bilinear)
+        self.up4 = Up(192, 128, bilinear)
         self.outc = OutConv(128, n_classes)
 
     def forward(self, x):
