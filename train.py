@@ -52,6 +52,7 @@ def train_net(net,
     ''')
 
     optimizer = optim.RMSprop(net.parameters(), lr=lr, weight_decay=1e-8, momentum=0.9)
+    optim.Adam(net.parameters(), lr=0.001,  weight_decay=1e-8,)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min' if net.n_classes > 1 else 'max', patience=2)
     if net.n_classes > 1:
         criterion = nn.CrossEntropyLoss()
