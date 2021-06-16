@@ -49,9 +49,6 @@ class BasicDataset(Dataset):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         mask = cv2.imread(mask_file[0], -1)
 
-        assert img.size == mask.size, \
-            f'Image and mask {idx} should be the same size, but are {img.size} and {mask.size}'
-
         img = self.preprocess(img, self.size)
         mask = self.preprocess(mask, self.size)
 
