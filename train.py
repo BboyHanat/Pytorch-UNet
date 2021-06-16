@@ -133,7 +133,7 @@ def get_args():
                         help='Batch size', dest='batchsize')
     parser.add_argument('-l', '--learning-rate', metavar='LR', type=float, nargs='?', default=0.0001,
                         help='Learning rate', dest='lr')
-    parser.add_argument('-f', '--load', dest='load', type=str, default=False,
+    parser.add_argument('-f', '--load', dest='load', type=str, default='CP_epoch7.pth',
                         help='Load model from a .pth file')
     parser.add_argument('-sw', '--size_w', dest='size_w', type=int, default=1280,
                         help='New width size of the images')
