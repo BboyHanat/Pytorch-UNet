@@ -28,16 +28,16 @@ def train_net(net,
               lr=0.001,
               val_percent=0.1,
               save_cp=True,
-              img_scale=0.5):
+              img_size=(1280, 640)):
 
-    dataset = BasicDataset(dir_img, dir_mask, img_scale)
+    dataset = BasicDataset(dir_img, dir_mask, img_size)
     n_val = int(len(dataset) * val_percent)
     n_train = len(dataset) - n_val
     train, val = random_split(dataset, [n_train, n_val])
     train_loader = DataLoader(train, batch_size=batch_size, shuffle=True, num_workers=8, pin_memory=True)
     val_loader = DataLoader(val, batch_size=batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=True)
 
-    writer = SummaryWriter(comment=f'LR_{lr}_BS_{batch_size}_SCALE_{img_scale}')
+    writer = SummaryWriter(comment=f'LR_{lr}_BS_{batch_size}_SIZE_{img_size}')
     global_step = 0
 
     logging.info(f'''Starting training:
@@ -48,7 +48,7 @@ def train_net(net,
         Validation size: {n_val}
         Checkpoints:     {save_cp}
         Device:          {device.type}
-        Images scaling:  {img_scale}
+        Images scaling:  {img_size}
     ''')
 
     optimizer = optim.RMSprop(net.parameters(), lr=lr, weight_decay=1e-8, momentum=0.9)
@@ -135,9 +135,9 @@ def get_args():
     parser.add_argument('-f', '--load', dest='load', type=str, default=False,
                         help='Load model from a .pth file')
     parser.add_argument('-sw', '--size_w', dest='scale', type=int, default=1280,
-                        help='Downscaling factor of the images')
-    parser.add_argument('-sw', '--size_w', dest='scale', type=int, default=640,
-                        help='Downscaling factor of the images')
+                        help='New width size of the images')
+    parser.add_argument('-sh', '--size_h', dest='scale', type=int, default=640,
+                        help='New height size factor of the images')
     parser.add_argument('-v', '--validation', dest='val', type=float, default=10.0,
                         help='Percent of the data that is used as validation (0-100)')
 
@@ -178,7 +178,7 @@ if __name__ == '__main__':
                   batch_size=args.batchsize,
                   lr=args.lr,
                   device=device,
-                  img_scale=args.scale,
+                  img_size=(args.size_w, args.size_h),
                   val_percent=args.val / 100)
     except KeyboardInterrupt:
         torch.save(net.state_dict(), 'INTERRUPTED.pth')
