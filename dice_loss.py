@@ -40,3 +40,15 @@ def dice_coeff(input, target):
         s = s + DiceCoeff().forward(c[0], c[1])
 
     return s / (i + 1)
+
+
+if __name__ == "__main__":
+    input_p = torch.zeros(size=(1, 1, 100, 100), dtype=torch.float32)
+    target = torch.zeros(size=(1, 1, 100, 100), dtype=torch.float32)
+    input_p[:, 0, 40: 60, 40:60] = 1
+    target[:, 0, 40: 60, 40:60] = 1
+    score = dice_coeff(input_p, target)
+    print(score)
+
+
+
